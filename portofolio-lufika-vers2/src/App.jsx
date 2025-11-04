@@ -74,7 +74,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center max-w-7xl px-4">
         {/* Logo */}
         <div className="text-xl md:text-2xl font-extrabold uppercase tracking-widest">
-          <a href="#">Photography</a>
+          <a href="#">Portofolio</a>
         </div>
         
         {/* Navigasi Desktop */}
