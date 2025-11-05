@@ -104,11 +104,11 @@ const Hero = () => {
       <div className="container mx-auto max-w-7xl">
         {/* Headline Besar */}
         <h1 className="text-7xl md:text-9xl font-extrabold uppercase text-center tracking-tighter leading-none">
-          Capturing
+          THE FUTURE,
         </h1>
         {/* Subheadline */}
         <h2 className="text-2xl md:text-3xl font-extrabold uppercase text-center tracking-wider mt-4">
-          The moments that captivate your heart
+          ONE LINE OF CODE AT A TIME
         </h2>
 
         {/* Layout 2 Kolom */}
@@ -117,7 +117,7 @@ const Hero = () => {
           {/* Kolom Kiri: Kartu Teks */}
           <div className="bg-soft-beige border border-deep-black rounded-2xl p-8 flex flex-col justify-between shadow-sm">
             <p className="font-sans text-base leading-relaxed max-w-md">
-              Amelia Allen is a lifestyle, portrait and documentary photographer from Somerset who now lives and works in London.
+              I’m Luvi Asakura, an AI and web developer who loves blending creativity with intelligence — crafting digital experiences that think, feel, and inspire. Every project I build is a mix of logic and emotion, designed to make technology feel more human.
             </p>
             <button className="mt-6 bg-deep-black text-soft-beige py-3 px-8 rounded-full uppercase text-sm font-bold tracking-wider hover:bg-dark-gray transition-colors duration-300 self-start">
               About Us
@@ -153,16 +153,16 @@ const About = () => {
             About Me
           </h2>
           <p className="font-sans text-base lowercase leading-relaxed text-dark-gray max-w-lg">
-            starting her career in fashion photography at the age of 18, amelia quickly found her niche in capturing authentic, candid moments. her work seeks to find the beauty in the everyday, transforming the mundane into something magical. with a decade of experience, she has collaborated with international brands.
+            Starting her journey in web design and artificial intelligence at 19, Luvi Asakura quickly discovered her passion for creating technology that feels human. Her work blends logic and emotion, turning complex systems into meaningful digital experiences. With a deep curiosity for innovation, she continues to explore how design and AI can shape the future of interaction.
           </p>
         </div>
 
         {/* 3 Foto Horizontal di bawah */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {[
-            { src: "https://placehold.co/500x400/cccccc/1c1b1b?text=Candid", alt: "Candid lifestyle shot" },
-            { src: "https://placehold.co/500x400/bbbbbb/1c1b1b?text=Lifestyle", alt: "Lifestyle photography example" },
-            { src: "https://placehold.co/500x400/aaaaaa/1c1b1b?text=Detail", alt: "Detail shot" },
+            { src: "https://i.pinimg.com/1200x/0d/b4/91/0db491bb75e4282766d05546aefd6cb8.jpg", alt: "AI Bot - MindEase (Mindy)" },
+            { src: "https://i.pinimg.com/736x/83/23/6d/83236d2f560e6e8938fec2238f83cefe.jpg", alt: "Music stample" },
+            { src: "https://i.pinimg.com/736x/a8/8a/8e/a88a8e8b5b4544d8a34b264841ba8956.jpg", alt: "tamplate-project" },
           ].map((img, index) => (
             <div key={index} className="overflow-hidden rounded-2xl shadow-md group">
               <img 
