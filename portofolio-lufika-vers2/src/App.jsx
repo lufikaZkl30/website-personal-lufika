@@ -112,29 +112,30 @@ const Hero = () => {
         </h2>
 
         {/* Layout 2 Kolom */}
-        <div className="mt-16 md:mt-24 grid md:grid-cols-2 gap-8 md:gap-12 items-stretch">
-          
+        <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
+
           {/* Kolom Kiri: Kartu Teks */}
-          <div className="bg-soft-beige border border-deep-black rounded-2xl p-8 flex flex-col justify-between shadow-sm">
-            <p className="font-sans text-base leading-relaxed max-w-md">
+          <div className="bg-soft-beige border border-deep-black rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-sm w-[350px] md:w-[400px] h-auto">
+            <p className="font-sans text-sm md:text-base leading-relaxed">
               I’m Luvi Asakura, an AI and web developer who loves blending creativity with intelligence — crafting digital experiences that think, feel, and inspire. Every project I build is a mix of logic and emotion, designed to make technology feel more human.
             </p>
-            <button className="mt-6 bg-deep-black text-soft-beige py-3 px-8 rounded-full uppercase text-sm font-bold tracking-wider hover:bg-dark-gray transition-colors duration-300 self-start">
+            <button className="mt-6 bg-deep-black text-soft-beige py-2 px-6 rounded-full uppercase text-xs md:text-sm font-bold tracking-wider hover:bg-dark-gray transition-colors duration-300 self-start">
               About Us
             </button>
           </div>
 
           {/* Kolom Kanan: Foto */}
-          <div className="w-full h-full">
+          <div className="w-[350px] md:w-[400px]">
             <img 
-              src="https://placehold.co/600x700/3a3a3a/e6d8c3?text=Photographer" 
-              alt="Portrait of the photographer Amelia Allen"
-              className="w-full h-full object-cover rounded-2xl shadow-lg"
-              style={{ minHeight: '300px' }}
-              onError={(e) => e.target.src='https://placehold.co/600x700/3a3a3a/e6d8c3?text=Image+Error'}
+              src="./public/img/lewfika.png" 
+              alt="Portrait"
+              className="w-full h-auto object-cover rounded-2xl shadow-lg"
+              style={{ minHeight: '280px', maxHeight: '400px' }}
+              onError={(e) => e.target.src='https://placehold.co/400x400/3a3a3a/e6d8c3?text=Image+Error'}
             />
           </div>
         </div>
+
       </div>
     </section>
   );
@@ -300,7 +301,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12 text-center md:text-left">
             {/* Email */}
             <a href="mailto:hello@gmail.com" className="text-2xl md:text-3xl font-light hover:opacity-70 transition-opacity duration-300">
-              Say hello ✈ hello@gmail.com
+              Say hello ✈ lufikabgy337@gmail.com 
             </a>
             
             {/* Sosial Media */}
@@ -318,7 +319,7 @@ const Footer = () => {
       {/* Bagian Bawah Footer (Logo Besar) */}
       <div className="mt-24 bg-deep-black text-soft-beige py-16 md:py-20 text-center">
         <h3 className="text-6xl md:text-9xl font-extrabold uppercase tracking-tighter opacity-90">
-          Photography
+          portofolio : Luvi Asakura
         </h3>
       </div>
     </footer>
