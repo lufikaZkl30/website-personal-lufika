@@ -5,7 +5,13 @@
   text-align: center;
 }
 
-.logo {
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -27,11 +33,6 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
 
 .card {
   padding: 2em;
@@ -39,4 +40,208 @@
 
 .read-the-docs {
   color: #888;
+} */
+
+/* --- src/index.css --- */
+/* @tailwind base; @tailwind components; @tailwind utilities; (Ditangani otomatis oleh environment ini) */
+
+/* Custom global styles to reproduce glossy monochrome design */
+:root {
+  --bg: #f3f3f3;
+  --black-ui: #0b0b0b;
+  --soft-white: #f6f6f6;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Tambahan untuk preview agar terlihat rapi di tengah */
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.container-custom {
+  max-width: 1100px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Navbar Pill */
+.nav-pill {
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-radius: 9999px;
+  padding: 10px 18px;
+  backdrop-filter: blur(10px); /* Tambahan efek kaca */
+}
+
+.nav-link {
+  color: #555; /* Sedikit lebih gelap agar terbaca di background terang */
+  margin: 0 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: #000; }
+.nav-link.active { color: #000; font-weight: 700; text-decoration: underline; }
+
+/* Untuk navbar dark mode items */
+.nav-pill-dark .nav-link { color: #ccc; }
+.nav-pill-dark .nav-link:hover { color: #fff; }
+
+/* Search Bar Style */
+.search-pill {
+  background: linear-gradient(90deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+  border-radius: 40px;
+  padding: 12px 18px;
+  color: #ddd;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 4px 12px rgba(255,255,255,0.02);
+}
+
+/* Hero Card */
+.hero-card {
+  background: linear-gradient(90deg, #0b0b0b 0%, #111 50%, #0b0b0b 100%);
+  border-radius: 28px;
+  padding: 28px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  position: relative;
+  overflow: hidden; /* Agar hiasan tidak keluar */
+}
+
+.hero-left {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+.badge-round {
+  background: white;
+  color: black;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+/* Info Card (White card on hero right) */
+.info-card {
+  background: #fff;
+  color: #111;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 18px 30px rgba(0,0,0,0.25);
+}
+
+/* Action Icons */
+.icon-circle {
+  background: #fff;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  margin-right: 12px;
+  color: #111;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.icon-circle:hover { transform: scale(1.05); }
+
+/* Timeline Box */
+.timeline-card {
+  background: linear-gradient(90deg, #0b0b0b 0%, #111 50%, #0b0b0b 100%);
+  border-radius: 24px;
+  padding: 28px;
+  color: white;
+  box-shadow: 0 18px 30px rgba(0,0,0,0.32);
+}
+
+.timeline-pill {
+  background: #fff;
+  color: #111;
+  border-radius: 9999px;
+  padding: 10px 18px;
+  display: inline-block;
+  margin: 6px 6px 6px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Carousel */
+.carousel-card {
+  background: linear-gradient(145deg, #1a1a1a, #000);
+  border-radius: 18px;
+  padding: 16px;
+  width: 220px;
+  height: 130px;
+  box-shadow: 0 18px 30px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+}
+.carousel-card:hover { transform: translateY(-5px); }
+
+.footer-pill {
+  background: linear-gradient(90deg, #0b0b0b 0%, #111 50%, #0b0b0b 100%);
+  padding: 14px 30px;
+  border-radius: 9999px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* Buttons */
+.btn-pill {
+  background: #fff;
+  color: #111;
+  padding: 10px 24px;
+  border-radius: 28px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  font-weight: 700;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-pill:hover { background: #f0f0f0; }
+
+.btn-dark {
+  background: #111;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 28px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  font-weight: 700;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .hero-title { font-size: 34px; }
+  .container-custom { padding: 12px; margin-top: 10px; }
+  .hero-card { flex-direction: column; }
+  .hero-left { margin-bottom: 20px; }
+  .search-bar-container { flex-direction: column; gap: 10px; }
+  .search-pill { width: 100%; }
 }

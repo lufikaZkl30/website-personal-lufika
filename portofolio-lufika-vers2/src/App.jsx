@@ -1,387 +1,577 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// --- Kustom Hook untuk Animasi Scroll ---
-// Hook ini akan mengamati elemen dan mengembalikan status 'isVisible'
-// saat elemen masuk ke viewport, yang memicu animasi fade-in.
-const useIntersectionObserver = (options) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const domRef = useRef(null);
+/**
+ * =========================================================================
+ * 🎨 1. GLOBAL CSS (src/index.css)
+ * =========================================================================
+ * Instruksi:
+ * Copy isi string di dalam tag <style> ini ke file 'src/index.css'
+ * jika kamu menjalankannya di local project.
+ */
+const Styles = () => (
+  <style>{`
+    /* Tailwind directives (optional - environment ini menanganinya otomatis) */
+    /* @tailwind base; @tailwind components; @tailwind utilities; */
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Berhenti mengamati setelah terlihat
-          observer.unobserve(entry.target);
-        }
-      });
-    }, options);
-
-    const { current } = domRef;
-    if (current) {
-      observer.observe(current);
+    :root {
+      --bg: #f3f3f3;
+      --black-ui: #0b0b0b;
     }
 
-    return () => {
-      if (current) {
-        observer.unobserve(current);
-      }
-    };
-  }, [options]);
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      /* Center layout for preview */
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-  return [domRef, isVisible];
-};
+    /* Container */
+    .container-custom {
+      max-width: 1100px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 20px;
+    }
 
-// --- Komponen FadeInWrapper ---
-// Komponen wrapper untuk menerapkan animasi fade-in
-const FadeInSection = ({ children, slideFrom = 'bottom' }) => {
-  const [ref, isVisible] = useIntersectionObserver({
-    threshold: 0.1, // Memicu saat 10% terlihat
-    triggerOnce: true,
-  });
+    /* --- Reusable Styles (Glossy UI) --- */
+    
+    /* Navbar Pill */
+    .nav-pill {
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border-radius: 9999px;
+      padding: 10px 18px;
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
 
-  // Tentukan kelas transformasi berdasarkan arah slide
-  let transformClasses = '';
-  switch (slideFrom) {
-    case 'left':
-      transformClasses = 'opacity-0 -translate-x-10';
-      break;
-    case 'right':
-      transformClasses = 'opacity-0 translate-x-10';
-      break;
-    default: // 'bottom'
-      transformClasses = 'opacity-0 translate-y-10';
-  }
+    .nav-link {
+      color: #555;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #000; }
+    .nav-link.active {
+      color: #000;
+      font-weight: 700;
+      text-decoration: underline;
+    }
 
+    /* Search Pill */
+    .search-pill {
+      background: linear-gradient(90deg, #0a0a0a, #111);
+      border-radius: 40px;
+      padding: 12px 18px;
+      color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 4px 12px rgba(255,255,255,0.02);
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: linear-gradient(90deg, #0b0b0b, #111);
+      border-radius: 28px;
+      padding: 28px;
+      color: white;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      line-height: 1.05;
+    }
+
+    .badge-round {
+      background: white;
+      color: black;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }
+
+    /* Info Card */
+    .info-card {
+      background: #fff;
+      color: #111;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.25);
+    }
+
+    /* Icons */
+    .icon-circle {
+      background: #fff;
+      width: 56px;
+      height: 56px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+      margin-right: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      color: #111;
+      font-size: 20px;
+    }
+    .icon-circle:hover { transform: scale(1.05); }
+
+    /* Timeline */
+    .timeline-card {
+      background: linear-gradient(90deg, #0b0b0b, #111);
+      border-radius: 24px;
+      padding: 28px;
+      color: white;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.32);
+    }
+
+    .timeline-pill {
+      background: #fff;
+      color: #111;
+      border-radius: 9999px;
+      padding: 10px 18px;
+      display: inline-block;
+      margin: 6px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    /* Carousel */
+    .carousel-card {
+      background: linear-gradient(145deg, #1a1a1a, #000);
+      border-radius: 18px;
+      padding: 16px;
+      min-width: 220px;
+      height: 130px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .footer-pill {
+      background: linear-gradient(90deg, #0b0b0b, #111);
+      padding: 14px 30px;
+      border-radius: 9999px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      width: 100%;
+      position: relative;
+    }
+
+    /* Buttons */
+    .btn-pill {
+      background: #fff;
+      color: #111;
+      padding: 10px 24px;
+      border-radius: 28px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-pill:hover { background: #eee; }
+
+    .btn-dark {
+      background: #111;
+      color: white;
+      padding: 10px 24px;
+      border-radius: 28px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 34px; }
+      .container-custom { padding: 12px; margin-top: 10px; }
+      .nav-pill { overflow-x: auto; max-width: 100%; }
+      .hero-card > div { flex-direction: column; }
+      .hero-card div[style*="width:360"] { width: 100% !important; }
+    }
+  `}</style>
+);
+
+
+/**
+ * =========================================================================
+ * 🧩 2. COMPONENTS
+ * =========================================================================
+ */
+
+// --- src/components/Navbar.js ---
+const Navbar = () => {
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-1000 ease-out ${
-        isVisible ? 'opacity-100 translate-x-0 translate-y-0' : transformClasses
-      }`}
-    >
-      {children}
+    <div style={{display:'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent:'space-between', alignItems:'center', gap:16}}>
+      <div className="nav-pill">
+        <div className="nav-link">Menu</div>
+        <div className="nav-link active">Home</div>
+        <div className="nav-link">Projects</div>
+        <div className="nav-link">Gallery</div>
+        <div className="nav-link">About</div>
+      </div>
+      <div style={{display:'flex', alignItems:'center', gap:12}}>
+        <div className="nav-pill" style={{padding:'6px 12px'}}>
+          <div className="nav-link" style={{color:'#000', margin:0}}>Account</div>
+        </div>
+        <div className="nav-pill search-pill" style={{padding:'6px'}}>
+          <div style={{display:'flex', alignItems:'center', gap:8}}>
+            <div style={{width:32,height:32,borderRadius:9999,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',color:'#000',fontWeight:700}}>B</div>
+            <div style={{color:'#fff',fontWeight:600, paddingRight: 8}}>BellArt__03</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-
-// ===== 1. HEADER =====
-const Header = () => {
+// --- src/components/SearchBar.js ---
+const SearchBar = () => {
   return (
-    <header className="bg-deep-black text-soft-beige p-6 md:p-8 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center max-w-7xl px-4">
-        {/* Logo */}
-        <div className="text-xl md:text-2xl font-extrabold uppercase tracking-widest">
-          <a href="#">Portofolio</a>
+    <div style={{display:'flex', flexWrap:'wrap', alignItems:'center', justifyContent:'space-between', gap:16}}>
+      <div className="search-pill" style={{flex:1, minWidth: '280px'}}>
+        <input className="" placeholder="Search history, articles..." style={{background:'transparent',border:'none',outline:'none',color:'#ddd',flex:1, fontSize: '14px'}} />
+        <div style={{display:'flex',gap:12,alignItems:'center', paddingLeft: 10, borderLeft: '1px solid #333'}}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ddd" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ddd" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </div>
-        
-        {/* Navigasi Desktop */}
-        <nav className="hidden md:flex space-x-8 text-sm uppercase tracking-wider">
-          <a href="#about" className="hover:opacity-70 transition-opacity duration-300">About</a>
-          <a href="#featured" className="hover:opacity-70 transition-opacity duration-300">Gallery</a>
-          <a href="#projects" className="hover:opacity-70 transition-opacity duration-300">Project</a>
-          <a href="#contact" className="hover:opacity-70 transition-opacity duration-300">Contact</a>
-        </nav>
-        
-        {/* Tombol Menu Mobile (hanya ikon) */}
-        <button className="md:hidden text-soft-beige text-2xl">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
       </div>
-    </header>
+      <div style={{color:'#888', fontWeight:700, letterSpacing:'0.2em', fontSize:'12px'}}>COLLABORATION</div>
+    </div>
   );
 };
 
-
-// ===== 2. HERO SECTION =====
-const Hero = () => {
+// --- src/components/InfoCard.js ---
+const InfoCard = () => {
   return (
-    <section className="bg-soft-beige text-deep-black py-24 px-6 md:px-12">
-      <div className="container mx-auto max-w-7xl">
-        {/* Headline Besar */}
-        <h1 className="text-7xl md:text-9xl font-extrabold uppercase text-center tracking-tighter leading-none">
-          THE FUTURE,
-        </h1>
-        {/* Subheadline */}
-        <h2 className="text-2xl md:text-3xl font-extrabold uppercase text-center tracking-wider mt-4">
-          ONE LINE OF CODE AT A TIME
-        </h2>
-
-        {/* Layout 2 Kolom */}
-        <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
-
-          {/* Kolom Kiri: Kartu Teks */}
-          <div className="bg-soft-beige border border-deep-black rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-sm w-[350px] md:w-[400px] h-auto">
-            <p className="font-sans text-sm md:text-base leading-relaxed">
-              I’m Luvi Asakura, an AI and web developer who loves blending creativity with intelligence — crafting digital experiences that think, feel, and inspire. Every project I build is a mix of logic and emotion, designed to make technology feel more human.
-            </p>
-            <button className="mt-6 bg-deep-black text-soft-beige py-2 px-6 rounded-full uppercase text-xs md:text-sm font-bold tracking-wider hover:bg-dark-gray transition-colors duration-300 self-start">
-              About Us
-            </button>
-          </div>
-
-          {/* Kolom Kanan: Foto */}
-          <div className="w-[350px] md:w-[400px]">
-            <img 
-              src="./public/img/lewfika.png" 
-              alt="Portrait"
-              className="w-full h-auto object-cover rounded-2xl shadow-lg"
-              style={{ minHeight: '280px', maxHeight: '400px' }}
-              onError={(e) => e.target.src='https://placehold.co/400x400/3a3a3a/e6d8c3?text=Image+Error'}
-            />
-          </div>
-        </div>
-
+    <div className="info-card">
+      <div style={{display:'flex',justifyContent:'flex-end',gap:8,marginBottom:12}}>
+        <button className="btn-dark">LOGIN</button>
+        <button className="btn-pill" style={{background: '#f0f0f0'}}>GET STARTED</button>
       </div>
-    </section>
+      <h3 style={{margin:'0 0 8px 0',fontSize:18,fontWeight:800}}>Apa itu UI/UX Design?</h3>
+      <p style={{color:'#555', fontSize: '14px', lineHeight: '1.5'}}>Sejarah desain UI/UX dimulai dengan perkembangan teknologi dan kebutuhan akan antarmuka yang ramah pengguna.</p>
+      <div style={{textAlign:'right',marginTop:12}}>
+        <button style={{border:'none',background:'transparent',fontWeight:700,borderBottom:'2px solid #000',paddingBottom:2,cursor:'pointer', fontSize:'13px'}}>View more →</button>
+      </div>
+    </div>
   );
 };
 
-
-// ===== 3. ABOUT ME SECTION =====
-const About = () => {
+// --- src/components/HeroSection.js ---
+const HeroSection = () => {
   return (
-    <section id="about" className="bg-soft-beige text-deep-black py-24 px-6 md:px-12">
-      <div className="container mx-auto max-w-7xl">
-        
-        {/* Grid: Judul di kiri, Teks di kanan */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
-          <h2 className="text-5xl md:text-6xl font-extrabold uppercase tracking-tighter">
-            About Me
-          </h2>
-          <p className="font-sans text-base lowercase leading-relaxed text-dark-gray max-w-lg">
-            Starting her journey in web design and artificial intelligence at 19, Luvi Asakura quickly discovered her passion for creating technology that feels human. Her work blends logic and emotion, turning complex systems into meaningful digital experiences. With a deep curiosity for innovation, she continues to explore how design and AI can shape the future of interaction.
+    <div className="hero-card" style={{display:'flex',gap:24,flexDirection:'column'}}>
+      <div style={{display:'flex',gap:24,alignItems:'center', flexWrap: 'wrap'}}>
+        <div style={{display:'flex',flexDirection:'column',flex:1, minWidth: '300px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+            <div className="badge-round">0.1</div>
+            <div style={{color:'#cfcfcf',fontWeight:700,letterSpacing:'0.08em', fontSize: '12px'}}>MENGENAL SEJARAH UI/UX</div>
+          </div>
+          <div className="hero-title">
+            UI/UX DESIGN<br/>
+            <span style={{background:'#fff',color:'#000',padding:'6px 10px',borderRadius:8,fontWeight:800,fontSize:14, verticalAlign: 'middle', marginLeft: '10px'}}>SEJARAH</span>
+          </div>
+        </div>
+        <div style={{width:360, maxWidth: '100%'}}>
+          <InfoCard />
+        </div>
+      </div>
+      
+      <div style={{marginTop: 10, height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', width: '80%', position: 'relative'}}>
+         <div style={{position:'absolute', right:'-10px', top:'-10px', width:'24px', height:'24px', background:'white', borderRadius:'50%', border:'4px solid #000'}}></div>
+      </div>
+
+      <div style={{display:'flex',alignItems:'center',gap:12, marginTop: 10}}>
+        <div className="icon-circle">❤</div>
+        <div className="icon-circle">🔖</div>
+        <div className="icon-circle">⤴</div>
+      </div>
+    </div>
+  );
+};
+
+// --- src/components/TimelineSection.js ---
+const TimelineSection = () => {
+  return (
+    <div className="timeline-card">
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20, flexWrap:'wrap', gap:10}}>
+        <h3 style={{margin:0,fontSize:20,fontWeight:800}}>TIMELINE SEJARAH</h3>
+        <div style={{display:'flex',gap:8, flexWrap:'wrap'}}>
+          <div className="timeline-pill">1. 1950-an</div>
+          <div className="timeline-pill">2. 1968</div>
+          <div className="timeline-pill" style={{background: '#333', color: 'white'}}>3. 1980-an</div>
+        </div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',gap:16}}>
+        <div style={{background:'rgba(255,255,255,0.05)',padding:16,borderRadius:16, border: '1px solid rgba(255,255,255,0.1)'}}> 
+          <h4 style={{color:'#fff',marginTop:0, marginBottom: 8}}>Era Mainframe</h4>
+          <p style={{color:'#bbb', fontSize: '13px', lineHeight: '1.5'}}>Komputer pertama dirancang untuk militer. Antarmuka sangat kompleks dan hanya untuk teknisi terlatih.</p>
+        </div>
+        <div style={{background:'rgba(255,255,255,0.05)',padding:16,borderRadius:16, border: '1px solid rgba(255,255,255,0.1)'}}> 
+          <h4 style={{color:'#fff',marginTop:0, marginBottom: 8}}>Kelahiran Mouse</h4>
+          <p style={{color:'#bbb', fontSize: '13px', lineHeight: '1.5'}}>Douglas Engelbart menciptakan mouse dan konsep GUI pertama, mengubah cara interaksi manusia-komputer.</p>
+        </div>
+        <div style={{background:'rgba(255,255,255,0.05)',padding:16,borderRadius:16, border: '1px solid rgba(255,255,255,0.1)'}}> 
+          <h4 style={{color:'#fff',marginTop:0, marginBottom: 8}}>Revolusi PC</h4>
+          <p style={{color:'#bbb', fontSize: '13px', lineHeight: '1.5'}}>Apple meluncurkan Macintosh. Komputer personal dengan GUI yang memikat pengguna umum.</p>
+        </div>
+      </div>
+
+      <div style={{marginTop:16,display:'flex',gap:8, flexWrap:'wrap'}}>
+        <div className="timeline-pill" style={{background:'transparent',border:'1px solid rgba(255,255,255,0.2)',color:'#ddd'}}>4. 1990-an</div>
+        <div className="timeline-pill" style={{background:'transparent',border:'1px solid rgba(255,255,255,0.2)',color:'#ddd'}}>5. 2000-an</div>
+        <div className="timeline-pill">6. Saat Ini</div>
+      </div>
+    </div>
+  );
+};
+
+// --- src/components/CarouselSection.js ---
+const CarouselSection = () => {
+  const items = [
+    { title: 'Xerox PARC', bg: 'linear-gradient(135deg, #3b82f6, #1e3a8a)' },
+    { title: 'Macintosh', bg: 'linear-gradient(135deg, #8b5cf6, #4c1d95)' },
+    { title: 'Material Design', bg: 'linear-gradient(135deg, #10b981, #064e3b)' },
+    { title: 'Modern Glassmorphism', bg: 'linear-gradient(135deg, #f59e0b, #78350f)' }
+  ];
+
+  return (
+    <div style={{display:'flex',alignItems:'center',gap:12}}>
+      <div className="icon-circle" style={{width:44,height:44,fontSize:20, flexShrink: 0}}>‹</div>
+      <div style={{display:'flex',gap:12,overflowX:'auto',padding:'8px 4px', scrollbarWidth: 'none', width: '100%'}}>
+        {items.map((item,i)=> (
+          <div key={i} className="carousel-card" style={{background: item.bg, flexShrink: 0}}>
+            {item.title}
+          </div>
+        ))}
+      </div>
+      <div className="icon-circle" style={{width:44,height:44,fontSize:20, flexShrink: 0}}>›</div>
+    </div>
+  );
+};
+
+// --- src/components/ProjectsSection.js ---
+const ProjectsSection = () => {
+  const [projects, setProjects] = useState(() => {
+    try {
+      const raw = localStorage.getItem('projects');
+      return raw ? JSON.parse(raw) : [
+        { id: 1, title: 'E-Commerce App', desc: 'Redesign aplikasi belanja online dengan fokus konversi.' },
+        { id: 2, title: 'Banking Dashboard', desc: 'Dashboard admin untuk monitoring transaksi realtime.' }
+      ];
+    } catch { return []; }
+  });
+  const [form, setForm] = useState({title:'',desc:''});
+
+  useEffect(() => {
+    localStorage.setItem('projects', JSON.stringify(projects));
+  }, [projects]);
+
+  function addProject(e){
+    e.preventDefault();
+    if(!form.title) return alert('Masukkan judul project');
+    const newP = { id: Date.now(), title: form.title, desc: form.desc };
+    setProjects([newP, ...projects]);
+    setForm({title:'',desc:''});
+  }
+
+  return (
+    <div>
+      <div style={{marginBottom: 20}}>
+        <h3 style={{fontSize:20,fontWeight:800, marginBottom: 5}}>Projects</h3>
+        <p style={{color:'#666', fontSize: '14px', margin: 0}}>Tambahkan project untuk portofoliomu — data disimpan lokal (localStorage).</p>
+      </div>
+
+      <form onSubmit={addProject} style={{background:'white', padding: 20, borderRadius: 16, boxShadow: '0 5px 15px rgba(0,0,0,0.05)', marginBottom: 24}}>
+        <div style={{display:'flex', gap:10, flexWrap:'wrap'}}>
+          <input 
+            value={form.title} 
+            onChange={e=>setForm({...form,title:e.target.value})} 
+            placeholder="Judul Project (cth: Redesign Gojek)" 
+            style={{padding:12,borderRadius:8,border:'1px solid #eee',flex:1, minWidth: '200px', outline: 'none', background: '#fafafa'}} 
+          />
+          <input 
+            value={form.desc} 
+            onChange={e=>setForm({...form,desc:e.target.value})} 
+            placeholder="Deskripsi singkat..." 
+            style={{padding:12,borderRadius:8,border:'1px solid #eee',flex:2, minWidth: '200px', outline: 'none', background: '#fafafa'}} 
+          />
+          <button className="btn-dark" type="submit">Tambah +</button>
+        </div>
+      </form>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:16}}>
+        {projects.length === 0 && <div style={{color:'#777', fontStyle: 'italic'}}>Belum ada project. Tambahkan project di form di atas.</div>}
+        {projects.map(p=> (
+          <div key={p.id} style={{background:'white',padding:20,borderRadius:16,boxShadow:'0 8px 18px rgba(0,0,0,0.06)', border: '1px solid #f0f0f0'}}>
+            <div style={{height: 40, width: 40, background: '#f3f3f3', borderRadius: 8, marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>📂</div>
+            <h4 style={{margin:'0 0 8px 0',fontWeight:800}}>{p.title}</h4>
+            <p style={{color:'#666', fontSize: '14px', margin: 0, lineHeight: '1.4'}}>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- src/components/GallerySection.js ---
+const GallerySection = () => {
+  // Placeholder images for preview
+  const imgs = [
+    'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1586717791821-3f44a5638d0f?auto=format&fit=crop&w=400&q=80'
+  ];
+  return (
+    <div>
+      <h3 style={{fontSize:20,fontWeight:800, marginBottom: 5}}>Gallery</h3>
+      <p style={{color:'#666', fontSize: '14px', marginTop: 0}}>Kumpulan screenshot / ilustrasi project.</p>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:16,marginTop:16}}>
+        {imgs.map((src,i)=> (
+          <div key={i} style={{background:'#e5e5e5',borderRadius:16,overflow:'hidden',height:160,display:'flex',alignItems:'center',justifyContent:'center', position: 'relative'}}>
+            <img src={src} alt={`Project ${i+1}`} style={{width:'100%',height:'100%',objectFit:'cover', transition: 'transform 0.3s'}} />
+            <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 10, background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)', color: 'white', fontSize: '12px', fontWeight: 600}}>
+              Project Shot {i+1}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- src/components/AboutSection.js ---
+const AboutSection = () => {
+  return (
+    <div style={{background: 'white', padding: 30, borderRadius: 24, boxShadow: '0 10px 30px rgba(0,0,0,0.05)'}}>
+      <h3 style={{fontSize:20,fontWeight:800, marginTop: 0}}>About Me</h3>
+      <div style={{display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap'}}>
+        <div style={{width: 80, height: 80, borderRadius: '50%', background: '#ddd', flexShrink: 0, overflow: 'hidden'}}>
+           <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Profile" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        </div>
+        <div style={{flex: 1}}>
+          <p style={{color:'#555', lineHeight: '1.6', marginTop: 0}}>
+            Halo! Saya mahasiswa Teknik Informatika semester akhir. Saya sangat tertarik pada dunia <b>UI/UX Design</b> dan <b>Frontend Development</b>. 
+            Portofolio ini dibuat menggunakan React JS untuk mendemonstrasikan kemampuan saya dalam menerjemahkan desain menjadi kode yang fungsional.
           </p>
-        </div>
-
-        {/* 3 Foto Horizontal di bawah */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {[
-            { src: "https://i.pinimg.com/1200x/0d/b4/91/0db491bb75e4282766d05546aefd6cb8.jpg", alt: "AI Bot - MindEase (Mindy)" },
-            { src: "https://i.pinimg.com/736x/83/23/6d/83236d2f560e6e8938fec2238f83cefe.jpg", alt: "Music stample" },
-            { src: "https://i.pinimg.com/736x/a8/8a/8e/a88a8e8b5b4544d8a34b264841ba8956.jpg", alt: "tamplate-project" },
-          ].map((img, index) => (
-            <div key={index} className="overflow-hidden rounded-2xl shadow-md group">
-              <img 
-                src={img.src} 
-                alt={img.alt}
-                className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                onError={(e) => e.target.src=`https://placehold.co/500x400/aaaaaa/1c1b1b?text=Image+${index+1}`}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
-// ===== 4. FEATURED WORKS SECTION =====
-const FeaturedItem = ({ title, year, imgSrc, slideFrom }) => {
-  return (
-    <FadeInSection slideFrom={slideFrom}>
-      <a href="#" className="block relative h-56 md:h-64 rounded-2xl overflow-hidden group shadow-lg">
-        {/* Gambar Background */}
-        <img 
-          src={imgSrc} 
-          alt={title} 
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-          onError={(e) => e.target.src='https://placehold.co/1200x400/555555/ffffff?text=Image+Error'}
-        />
-        {/* Overlay Gelap */}
-        <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-40 transition-all duration-300"></div>
-        {/* Teks */}
-        <div className="absolute inset-0 flex items-center justify-center p-6">
-          <h3 className="text-3xl md:text-5xl font-extrabold uppercase text-white tracking-wider text-center">
-            {title} – {year}
-          </h3>
-        </div>
-      </a>
-    </FadeInSection>
-  );
-};
-
-const Featured = () => {
-  const works = [
-    { title: "Art Director", year: "2021", imgSrc: "https://placehold.co/1200x400/555555/ffffff?text=Project+One", slideFrom: "left" },
-    { title: "Photographer", year: "2021", imgSrc: "https://placehold.co/1200x400/666666/ffffff?text=Project+Two", slideFrom: "right" },
-    { title: "Videographer", year: "2022", imgSrc: "https://placehold.co/1200x400/777777/ffffff?text=Project+Three", slideFrom: "left" },
-  ];
-
-  return (
-    <section id="featured" className="bg-deep-black text-soft-beige py-24 px-6 md:px-12">
-      <div className="container mx-auto max-w-7xl">
-        <FadeInSection>
-          <h2 className="text-5xl md:text-6xl font-extrabold uppercase tracking-tighter mb-16">
-            Featured Works
-          </h2>
-        </FadeInSection>
-        
-        {/* Tumpukan Banner */}
-        <div className="space-y-8">
-          {works.map((work, index) => (
-            <FeaturedItem 
-              key={index} 
-              title={work.title} 
-              year={work.year} 
-              imgSrc={work.imgSrc}
-              slideFrom={work.slideFrom}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
-// ===== 5. PROJECTS SECTION =====
-const Projects = () => {
-  // Daftar 5 gambar untuk grid
-  const projectImages = [
-    // Baris Atas (3 gambar persegi)
-    { src: "https://placehold.co/500x500/d8c8b3/1c1b1b?text=People", alt: "People portrait", className: "col-span-2 row-span-1 aspect-square" },
-    { src: "https://placehold.co/500x500/c9b9a9/1c1b1b?text=Outdoors", alt: "Outdoor photography", className: "col-span-2 row-span-1 aspect-square" },
-    { src: "https://placehold.co/500x500/bfae9e/1c1b1b?text=Creative", alt: "Creative shot", className: "col-span-2 row-span-1 aspect-square" },
-    // Baris Bawah (2 gambar lebar)
-    { src: "https://placehold.co/600x400/b5a494/1c1b1b?text=Product", alt: "Product shot", className: "col-span-3 row-span-1 aspect-video md:aspect-[16/9]" },
-    { src: "https://placehold.co/600x400/ac9a89/1c1b1b?text=Sculpture", alt: "Sculpture art", className: "col-span-3 row-span-1 aspect-video md:aspect-[16/9]" },
-  ];
-
-  return (
-    <section id="projects" className="bg-soft-beige text-deep-black py-24 px-6 md:px-12">
-      <div className="container mx-auto max-w-7xl">
-        
-        {/* Header Bagian Proyek */}
-        <div className="flex justify-between items-center mb-12">
-          <h2 className="text-5xl md:text-6xl font-extrabold uppercase tracking-tighter">
-            Projects
-          </h2>
-          <a href="#" className="text-xs md:text-sm uppercase font-bold tracking-widest border border-deep-black px-5 py-3 rounded-full hover:bg-deep-black hover:text-soft-beige transition-colors duration-300 whitespace-nowrap">
-            Show All
-          </a>
-        </div>
-        
-        {/* Grid Proyek (3 atas, 2 bawah) */}
-        {/* Menggunakan grid 6-kolom untuk fleksibilitas */}
-        <div className="grid grid-cols-6 grid-rows-2 gap-6 md:gap-8">
-          {projectImages.map((img, index) => (
-            <div 
-              key={index} 
-              className={`group relative overflow-hidden rounded-2xl shadow-md ${img.className}`}
-            >
-              <img 
-                src={img.src} 
-                alt={img.alt} 
-                className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                onError={(e) => e.target.src=`https://placehold.co/500x500/aaaaaa/1c1b1b?text=Image+${index+1}`}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
-// ===== 6. FOOTER =====
-const Footer = () => {
-  return (
-    <footer id="contact" className="bg-soft-beige text-deep-black pt-24">
-      {/* Bagian Atas Footer (Kontak) */}
-      <FadeInSection>
-        <div className="container mx-auto max-w-7xl px-6 md:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12 text-center md:text-left">
-            {/* Email */}
-            <a href="mailto:hello@gmail.com" className="text-2xl md:text-3xl font-light hover:opacity-70 transition-opacity duration-300">
-              Say hello ✈ lufikabgy337@gmail.com 
-            </a>
-            
-            {/* Sosial Media */}
-            <div className="flex items-center space-x-3 md:space-x-4 font-medium uppercase tracking-wider text-sm">
-              <a href="#" className="hover:opacity-70 transition-opacity duration-300">LinkedIn</a>
-              <span>|</span>
-              <a href="#" className="hover:opacity-70 transition-opacity duration-300">Instagram</a>
-              <span>|</span>
-              <a href="#" className="hover:opacity-70 transition-opacity duration-300">Twitter</a>
-            </div>
+          <div style={{display: 'flex', gap: 10, marginTop: 15}}>
+            <span style={{background: '#f3f3f3', padding: '6px 12px', borderRadius: 20, fontSize: '12px', fontWeight: 600}}>React JS</span>
+            <span style={{background: '#f3f3f3', padding: '6px 12px', borderRadius: 20, fontSize: '12px', fontWeight: 600}}>Figma</span>
+            <span style={{background: '#f3f3f3', padding: '6px 12px', borderRadius: 20, fontSize: '12px', fontWeight: 600}}>CSS3</span>
           </div>
         </div>
-      </FadeInSection>
-      
-      {/* Bagian Bawah Footer (Logo Besar) */}
-      <div className="mt-24 bg-deep-black text-soft-beige py-16 md:py-20 text-center">
-        <h3 className="text-6xl md:text-9xl font-extrabold uppercase tracking-tighter opacity-90">
-          portofolio : Luvi Asakura
-        </h3>
       </div>
-    </footer>
+    </div>
   );
 };
 
-
-// ===== KOMPONEN UTAMA APP =====
-export default function App() {
+// --- src/components/ContactSection.js ---
+const ContactSection = () => {
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({name:'',email:'',message:''});
+  
+  function submit(e){ e.preventDefault(); setSent(true); setForm({name:'',email:'',message:''}); }
+  
   return (
-    // Gunakan warna-warna kustom dari config
-    // Kita asumsikan tailwind.config.js sudah disetup,
-    // tapi untuk file tunggal, kita akan gunakan style inline untuk ini.
-    // Namun, kelas `bg-deep-black` dll akan berfungsi jika disuntikkan.
-    // Mari kita tambahkan style global untuk warna.
+    <div>
+      <h3 style={{fontSize:20,fontWeight:800, marginBottom: 15}}>Contact</h3>
+      {!sent ? (
+        <form onSubmit={submit} style={{display:'grid',gap:12,maxWidth:600}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12}}>
+            <input required value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Nama Lengkap" style={{padding:14,borderRadius:12,border:'1px solid #ddd', outline: 'none'}} />
+            <input required type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} placeholder="Alamat Email" style={{padding:14,borderRadius:12,border:'1px solid #ddd', outline: 'none'}} />
+          </div>
+          <textarea required value={form.message} onChange={e=>setForm({...form,message:e.target.value})} placeholder="Tulis pesan Anda di sini..." style={{padding:14,borderRadius:12,border:'1px solid #ddd',minHeight:120, outline: 'none', fontFamily: 'inherit'}} />
+          <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+             <button className="btn-dark" type="submit" style={{padding: '12px 30px'}}>Kirim Pesan</button>
+          </div>
+        </form>
+      ) : (
+        <div style={{background:'#dcfce7',padding:20,borderRadius:16, color: '#166534', border: '1px solid #bbf7d0', textAlign: 'center'}}>
+          <h4 style={{margin: '0 0 5px 0'}}>Pesan Terkirim!</h4>
+          <p style={{margin: 0, fontSize: '14px'}}>Terima kasih telah menghubungi saya. Saya akan membalas secepatnya.</p>
+          <button onClick={() => setSent(false)} style={{marginTop: 15, background: 'transparent', border: 'none', textDecoration: 'underline', cursor: 'pointer', color: '#166534', fontWeight: 600}}>Kirim pesan lain</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- src/components/FooterNav.js ---
+const FooterNav = () => {
+  return (
+    <div style={{display:'flex',justifyContent:'center', marginTop: 'auto'}}>
+      <div className="footer-pill" style={{width:'100%',maxWidth:1100}}>
+        <div style={{width:'33%',textAlign:'center',color:'#888',fontWeight:700, fontSize: '10px', letterSpacing: '1px'}}>SPECIAL COLLABORATION</div>
+        <div style={{width:'33%',display:'flex',justifyContent:'center',position:'relative'}}>
+          <div style={{position:'absolute',top:-42,background:'#fff',width:64,height:64,borderRadius:9999,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 10px 25px rgba(0,0,0,0.3)', cursor: 'pointer', transition: 'transform 0.2s'}}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+          </div>
+        </div>
+        <div style={{width:'33%',textAlign:'center',color:'#888',fontWeight:700, fontSize: '10px', letterSpacing: '1px'}}>SEJARAH UI/UX DESIGN</div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * =========================================================================
+ * 🚀 3. MAIN APP COMPONENT (src/App.js)
+ * =========================================================================
+ */
+function App(){
+  return (
     <>
-      <style>{`
-        body {
-          font-family: 'Inter', sans-serif; /* Fallback font */
-        }
-        h1, h2, h3, h4, h5, h6, .font-extrabold {
-          font-family: 'Poppins', sans-serif; /* Fallback font */
-          font-weight: 800; /* ExtraBold */
-        }
-        
-        /* Definisi Warna Kustom Tailwind */
-        :root {
-          --color-deep-black: #1c1b1b;
-          --color-soft-beige: #e6d8c3;
-          --color-dark-gray: #2a2a2a;
-        }
-        .bg-deep-black { background-color: var(--color-deep-black); }
-        .bg-soft-beige { background-color: var(--color-soft-beige); }
-        .text-deep-black { color: var(--color-deep-black); }
-        .text-soft-beige { color: var(--color-soft-beige); }
-        .text-dark-gray { color: var(--color-dark-gray); }
-        .border-deep-black { border-color: var(--color-deep-black); }
-        
-        /* Google Fonts Import (jika React dimuat di HTML dengan ini) */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800;900&family=Inter:wght@400;500&display=swap');
-      `}</style>
-      
-      <div className="bg-soft-beige antialiased">
-        <Header />
-        <main>
-          <FadeInSection>
-            <Hero />
-          </FadeInSection>
-          <FadeInSection>
-            <About />
-          </FadeInSection>
-          
-          {/* Featured memiliki animasi internal per item */}
-          <Featured /> 
-          
-          <FadeInSection>
-            <Projects />
-          </FadeInSection>
-        </main>
-        {/* Footer memiliki animasi internal di bagian atasnya */}
-        <Footer /> 
+      <Styles />
+      <div className="container-custom">
+        <Navbar />
+        <div style={{height:32}} />
+        <SearchBar />
+        <div style={{height:32}} />
+        <HeroSection />
+        <div style={{height:40}} />
+        <TimelineSection />
+        <div style={{height:40}} />
+        <ProjectsSection />
+        <div style={{height:40}} />
+        <GallerySection />
+        <div style={{height:40}} />
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40}}>
+           <AboutSection />
+           <ContactSection />
+        </div>
+        <div style={{height:80}} />
+        <FooterNav />
       </div>
     </>
   );
 }
+
+export default App;
