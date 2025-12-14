@@ -1,286 +1,362 @@
-import React, { useState } from 'react';
-import { 
-  Menu, 
-  Home, 
-  Image as ImageIcon, 
-  Save, 
-  Info, 
-  User, 
-  Search, 
-  Mic, 
-  Camera, 
-  Heart, 
-  Bookmark, 
-  Share2, 
-  ArrowRight, 
-  ChevronLeft, 
-  ChevronRight, 
-  LayoutTemplate, 
-  Cpu, 
-  Palette, 
-  Code, 
-  Award, 
-  Mail 
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
-// --- COMPONENTS ---
+/* ========================================================================
+   ICONS (SVG Manual - Tanpa Library Eksternal)
+   ======================================================================== */
+const Icons = {
+  Menu: () => (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+  ),
+  Close: () => (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+  ),
+  Search: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+  ),
+  ArrowRight: () => (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+  ),
+  Code: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+  ),
+  Brain: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+  ),
+  Sun: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+  ),
+  Moon: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+  )
+};
 
-const Navbar = () => (
-  <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 relative z-50">
-    {/* Main Nav Pill */}
-    <div className="bg-black text-white rounded-full px-8 py-3 flex items-center gap-8 shadow-xl">
-      <button className="hover:text-gray-300 transition font-medium text-sm flex items-center gap-2">
-        <Menu size={18} /> Menu
-      </button>
-      <button className="hover:text-gray-300 transition font-medium text-sm border-b-2 border-white pb-0.5">Home</button>
-      <button className="hover:text-gray-300 transition font-medium text-sm">Image</button>
-      <button className="hover:text-gray-300 transition font-medium text-sm">Save</button>
-      <button className="hover:text-gray-300 transition font-medium text-sm">About</button>
-      <button className="hover:text-gray-300 transition font-medium text-sm">Account</button>
-    </div>
+/* ========================================================================
+   COMPONENTS
+   ======================================================================== */
 
-    {/* Profile Card */}
-    <div className="bg-black text-white rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-xl absolute right-0 md:relative">
-      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black">
-        <User size={18} />
-      </div>
-      <span className="font-bold text-sm">Luvi_Portfolio</span>
-    </div>
-  </div>
-);
+/* --- Navbar --- */
+const Navbar = ({ toggleTheme, isDark }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const links = ['Home', 'About', 'Experience', 'Projects', 'Contact'];
 
-const SearchSection = () => (
-  <div className="flex flex-col md:flex-row justify-between items-end md:items-center mt-8 mb-4 relative">
-    {/* Search Bar */}
-    <div className="bg-black text-gray-400 rounded-full px-6 py-3 w-full md:w-1/3 flex items-center justify-between shadow-lg">
-      <span className="text-sm">Search..</span>
-      <div className="flex gap-3 text-white">
-        <Mic size={18} />
-        <Camera size={18} />
-      </div>
-    </div>
-
-    {/* Collaboration Label */}
-    <div className="mt-4 md:mt-0 flex flex-col items-end">
-      <span className="text-xs font-bold tracking-[0.3em] text-black mb-1 uppercase">Collaboration</span>
-      <div className="w-32 h-1 bg-black rounded-full"></div>
-    </div>
-  </div>
-);
-
-const HeroSection = () => (
-  <div className="bg-black rounded-[3rem] p-8 md:p-12 text-white shadow-2xl relative overflow-hidden min-h-[500px] flex flex-col md:flex-row gap-8">
-    {/* Background Gradient Effect (Subtle) */}
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-black -z-10"></div>
-
-    {/* Left Content */}
-    <div className="flex-1 flex flex-col justify-between relative z-10">
-      <div>
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-bold text-lg">
-            0.1
+  return (
+    <nav className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+      <div className="w-full max-w-7xl bg-white/80 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-full px-6 py-3 flex justify-between items-center shadow-lg dark:shadow-2xl transition-colors duration-300">
+        {/* Brand */}
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black transition-colors">
+            <span className="font-black text-lg">AI</span>
           </div>
-          <div className="h-px bg-gray-600 w-48"></div>
-          <span className="text-gray-400 text-xs uppercase tracking-wider">Creative Developer</span>
+          <span className="text-lg font-bold tracking-tighter text-gray-900 dark:text-white transition-colors">
+            Engineer<span className="text-gray-500">.dev</span>
+          </span>
         </div>
 
-        <h1 className="text-[5rem] md:text-[7rem] font-bold leading-none tracking-tighter mb-2 font-sans mix-blend-difference">
-          PORTO
-          <br />
-          FOLIO
-        </h1>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex gap-1">
+          {links.map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`} 
+              className="px-5 py-2 rounded-full text-xs font-bold text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+
+        {/* Action / Theme Toggle */}
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+            aria-label="Toggle Theme"
+          >
+            {isDark ? <Icons.Sun /> : <Icons.Moon />}
+          </button>
+          
+          <button className="hidden md:block bg-black dark:bg-white text-white dark:text-black px-5 py-2 rounded-full text-xs font-bold hover:opacity-80 transition-opacity">
+            Hire Me
+          </button>
+          
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-gray-900 dark:text-white p-2">
+            {isOpen ? <Icons.Close /> : <Icons.Menu />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="absolute top-24 left-4 right-4 bg-white dark:bg-[#141414] border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col gap-2 md:hidden shadow-2xl z-50">
+           {links.map((item) => (
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsOpen(false)} className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 px-4 py-3 rounded-xl font-bold transition-colors">
+              {item}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+/* --- Hero --- */
+const Hero = () => {
+  return (
+    <section id="home" className="space-y-6 pt-6">
+      {/* Top Widget Bar */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-8 bg-white dark:bg-[#141414] rounded-full px-8 py-4 flex items-center gap-4 border border-gray-200 dark:border-white/5 text-gray-500 transition-colors duration-300 shadow-sm dark:shadow-none">
+          <Icons.Search />
+          <input type="text" placeholder="Search ML models, datasets, or papers..." className="bg-transparent border-none outline-none w-full text-gray-900 dark:text-white text-sm" />
+        </div>
+        <div className="md:col-span-4 bg-white dark:bg-[#141414] rounded-full px-8 py-4 flex items-center justify-between border border-gray-200 dark:border-white/5 transition-colors duration-300 shadow-sm dark:shadow-none">
+          <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">System Status</span>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span className="text-xs font-bold text-gray-900 dark:text-white">MODEL TRAINING</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Hero Card */}
+      <div className="bg-white dark:bg-[#141414] rounded-[3rem] p-8 md:p-14 border border-gray-200 dark:border-white/5 min-h-[500px] flex flex-col justify-between shadow-xl dark:shadow-2xl relative overflow-hidden group transition-colors duration-300">
+        {/* Background Gradient */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/10 dark:bg-blue-900/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+
+        <div className="grid md:grid-cols-2 gap-12 relative z-10 h-full">
+          <div className="flex flex-col justify-center space-y-8">
+            <div className="inline-flex items-center gap-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 w-max px-4 py-1.5 rounded-full transition-colors">
+              <span className="text-xs font-bold text-gray-700 dark:text-white">v2.0 AI Portfolio</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white leading-[1.1] tracking-tight transition-colors">
+              AI ENGINEER <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-white">PORTFOLIO</span>
+            </h1>
+
+            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-md transition-colors">
+              Building intelligent systems with data, code, and design. Specialized in NLP, Computer Vision, and Predictive Analytics.
+            </p>
+
+            <div className="flex gap-4 pt-4">
+              <button className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-sm font-bold hover:opacity-80 transition-all">
+                View Projects
+              </button>
+              <button className="bg-white dark:bg-[#222] text-black dark:text-white px-8 py-3 rounded-full text-sm font-bold border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
+                Contact Me
+              </button>
+            </div>
+          </div>
+
+          {/* Code Visual */}
+          <div className="flex flex-col justify-center">
+             <div className="bg-[#1a1a1a] rounded-2xl border border-gray-200 dark:border-white/10 p-6 font-mono text-sm shadow-2xl transition-colors">
+                <div className="flex gap-2 mb-4">
+                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="space-y-2 text-gray-400">
+                   <p><span className="text-blue-400">import</span> torch</p>
+                   <p><span className="text-blue-400">import</span> tensorflow <span className="text-blue-400">as</span> tf</p>
+                   <p className="text-gray-500"># Initializing Neural Network</p>
+                   <p><span className="text-purple-400">class</span> <span className="text-yellow-400">AI_Model</span>(nn.Module):</p>
+                   <p className="pl-4">def __init__(self):</p>
+                   <p className="pl-8">super(AI_Model, self).__init__()</p>
+                   <p className="pl-8 text-green-400">self.status = "Ready to Deploy"</p>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* --- About --- */
+const About = () => {
+  return (
+    <section id="about" className="bg-white dark:bg-[#141414] rounded-[2.5rem] p-10 border border-gray-200 dark:border-white/5 relative overflow-hidden transition-colors duration-300 shadow-lg dark:shadow-none">
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">About My Tech Stack</h2>
+          <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
+             I am an engineer focused on the intersection of Software Engineering and Artificial Intelligence. 
+             My goal is to create scalable AI solutions that solve real-world problems using state-of-the-art algorithms.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+             {['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'SQL', 'FastAPI'].map((tech) => (
+                <div key={tech} className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm font-bold">
+                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div> {tech}
+                </div>
+             ))}
+          </div>
+        </div>
         
-        {/* Subtitle Strip */}
-        <div className="bg-white text-black px-4 py-1 inline-block rounded-sm mt-4 transform -rotate-1">
-          <p className="text-sm font-bold uppercase tracking-widest">Luvi Asakura — Creative Developer & AI Enthusiast</p>
+        <div className="grid grid-cols-2 gap-4">
+           {[
+             { title: "Machine Learning", desc: "Supervised & Unsupervised" },
+             { title: "Deep Learning", desc: "CNNs, RNNs, Transformers" },
+             { title: "Data Engineering", desc: "ETL Pipelines & Big Data" },
+             { title: "Model Deployment", desc: "Docker, Kubernetes, AWS" }
+           ].map((item, idx) => (
+              <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0a] p-5 rounded-2xl border border-gray-200 dark:border-white/5 hover:border-blue-500 dark:hover:border-white/20 transition-all">
+                 <div className="text-gray-900 dark:text-white"><Icons.Brain /></div>
+                 <h3 className="text-gray-900 dark:text-white font-bold mt-3 mb-1">{item.title}</h3>
+                 <p className="text-xs text-gray-500">{item.desc}</p>
+              </div>
+           ))}
         </div>
       </div>
+    </section>
+  );
+};
 
-      {/* Action Buttons Bottom Left */}
-      <div className="flex gap-4 mt-12">
-        <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition">
-          <Heart fill="black" size={20} />
-        </button>
-        <button className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-black hover:scale-110 transition">
-          <Bookmark fill="black" size={20} />
-        </button>
-        <button className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-black hover:scale-110 transition">
-          <Share2 size={20} />
-        </button>
-      </div>
-    </div>
+/* --- Experience --- */
+const Experience = () => {
+  const steps = [
+    { title: "Foundations", subtitle: "Math & Stats", desc: "Mastering Linear Algebra, Calculus, and Probability." },
+    { title: "Data Analysis", subtitle: "Python & Pandas", desc: "Exploratory Data Analysis and visualization techniques." },
+    { title: "Machine Learning", subtitle: "Algorithms", desc: "Implementing regression, classification, and clustering." },
+    { title: "Deep Learning", subtitle: "Neural Networks", desc: "Building complex models for Vision and NLP tasks." }
+  ];
 
-    {/* Right Content (Floating Card Look) */}
-    <div className="flex-1 relative flex flex-col justify-center md:pl-12">
-       {/* Top Right Pill Buttons */}
-       <div className="flex gap-4 justify-end mb-8">
-          <button className="bg-[#1a1a1a] border border-gray-700 px-8 py-2 rounded-full text-xs font-bold tracking-wider hover:bg-white hover:text-black transition">VIEW CV</button>
-          <button className="bg-[#1a1a1a] border border-gray-700 px-8 py-2 rounded-full text-xs font-bold tracking-wider hover:bg-white hover:text-black transition">HIRE ME</button>
+  return (
+    <section id="experience" className="space-y-6">
+       <div className="bg-white dark:bg-[#141414] rounded-[2.5rem] p-8 md:p-10 border border-gray-200 dark:border-white/5 transition-colors duration-300 shadow-lg dark:shadow-none">
+          <div className="flex items-center gap-3 mb-8">
+             <div className="bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-full text-xs font-bold">TIMELINE</div>
+             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Engineering Journey</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+             {steps.map((step, index) => (
+                <div key={index} className="bg-gray-50 dark:bg-[#0a0a0a] p-6 rounded-3xl border border-gray-200 dark:border-white/5 hover:-translate-y-1 transition-transform">
+                   <div className="w-10 h-10 rounded-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 flex items-center justify-center text-black dark:text-white font-bold mb-4 shadow-sm dark:shadow-none">
+                      {index + 1}
+                   </div>
+                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">{step.title}</h3>
+                   <span className="text-xs font-mono text-blue-500 dark:text-blue-400 block mb-2">{step.subtitle}</span>
+                   <p className="text-sm text-gray-600 dark:text-gray-500 leading-snug">{step.desc}</p>
+                </div>
+             ))}
+          </div>
+       </div>
+    </section>
+  );
+};
+
+/* --- Projects --- */
+const Projects = () => {
+  const projects = [
+    { title: "Predictive Analytics", tech: "Python, Scikit-learn", desc: "Forecasting market trends using historical data." },
+    { title: "Computer Vision", tech: "OpenCV, PyTorch", desc: "Real-time object detection system for security feeds." },
+    { title: "NLP Chatbot", tech: "LLM, Transformers", desc: "Context-aware customer support bot using RAG." }
+  ];
+
+  return (
+    <section id="projects" className="bg-white dark:bg-[#141414] rounded-[2.5rem] p-8 md:p-12 border border-gray-200 dark:border-white/5 transition-colors duration-300 shadow-lg dark:shadow-none">
+       <div className="flex justify-between items-end mb-8">
+          <div>
+             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Selected Works</span>
+             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mt-2">AI Projects</h2>
+          </div>
+          <button className="hidden md:flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300">
+             View GitHub <Icons.ArrowRight />
+          </button>
        </div>
 
-      {/* The White Card */}
-      <div className="bg-white text-black rounded-[2.5rem] p-8 shadow-2xl relative">
-        <h2 className="text-2xl font-bold mb-4">Siapa Luvi Asakura?</h2>
-        <p className="text-gray-600 text-sm leading-relaxed mb-8">
-          Selamat datang di portofolio saya. Saya seorang AI Engineer & Web Developer yang fokus pada desain antarmuka, automasi AI, dan pembuatan aplikasi kreatif. Menggabungkan estetika dengan logika kode.
-        </p>
-        
-        {/* Custom Slider UI in Card */}
-        <div className="w-full bg-black h-3 rounded-full mb-2 relative">
-           <div className="absolute right-0 -top-1.5 w-6 h-6 bg-white border-4 border-black rounded-full"></div>
-        </div>
+       <div className="grid md:grid-cols-3 gap-6">
+          {projects.map((proj, idx) => (
+             <div key={idx} className="group bg-gray-50 dark:bg-[#0a0a0a] rounded-[2rem] border border-gray-200 dark:border-white/5 p-1 relative overflow-hidden hover:border-blue-500 dark:hover:border-white/20 transition-all">
+                <div className="bg-white dark:bg-[#111] rounded-[1.8rem] p-6 h-full flex flex-col justify-between transition-colors">
+                   <div className="mb-8">
+                      <div className="w-10 h-10 bg-gray-100 dark:bg-[#222] rounded-full flex items-center justify-center mb-4 text-black dark:text-white transition-colors">
+                         <Icons.Code />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{proj.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{proj.desc}</p>
+                   </div>
+                   <div className="pt-4 border-t border-gray-100 dark:border-white/5 flex justify-between items-center">
+                      <span className="text-xs font-mono text-gray-500">{proj.tech}</span>
+                      <div className="w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                         <Icons.ArrowRight />
+                      </div>
+                   </div>
+                </div>
+             </div>
+          ))}
+       </div>
+    </section>
+  );
+};
 
-        {/* View More Button Floating */}
-        <div className="absolute -bottom-6 -right-6">
-           <button className="bg-gray-200 text-black px-8 py-3 rounded-full font-bold text-sm shadow-lg flex items-center gap-2 hover:bg-white transition">
-             View more <div className="bg-black text-white rounded-full p-1"><ArrowRight size={14}/></div>
-           </button>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const TimelineItem = ({ num, title, content, icon: Icon }) => (
-  <div className="p-6 md:p-8 flex flex-col h-full border-r border-gray-800 last:border-r-0 relative group hover:bg-[#0a0a0a] transition duration-300">
-    <div className="flex justify-between items-start mb-6">
-      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-bold text-lg shadow-lg z-10">
-        {num}
-      </div>
-      {Icon && <Icon className="text-gray-600 group-hover:text-white transition" size={24} />}
-    </div>
-    <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
-    <p className="text-gray-400 text-xs leading-relaxed">
-      {content}
-    </p>
-  </div>
-);
-
-const TimelineSection = () => (
-  <div className="bg-black rounded-[3rem] shadow-2xl overflow-hidden text-white grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 divide-gray-800 relative">
-     {/* Row 1 */}
-     <TimelineItem 
-       num="1" 
-       title="Skills" 
-       icon={Code}
-       content="Penguasaan mendalam pada JavaScript, Python, React, dan integrasi AI Model untuk solusi web modern." 
-     />
-     <TimelineItem 
-       num="2" 
-       title="Projects" 
-       icon={LayoutTemplate}
-       content="Berbagai proyek full-stack dari e-commerce, dashboard analitik, hingga aplikasi generatif AI." 
-     />
-     <TimelineItem 
-       num="3" 
-       title="Experience" 
-       icon={Award}
-       content="3+ tahun pengalaman profesional bekerja dengan startup teknologi dan agensi kreatif internasional." 
-     />
-     
-     {/* Divider Line for Visual accuracy (Absolute centered line horizontally if needed, but grid handles it) */}
-
-     {/* Row 2 - Conceptually styling borders to match grid */}
-     <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 border-t border-gray-800">
-        <TimelineItem 
-          num="4" 
-          title="Tools" 
-          icon={Cpu}
-          content="VS Code, Figma, Docker, TensorFlow, Git, dan Adobe Creative Suite sebagai senjata utama." 
-        />
-        <TimelineItem 
-          num="5" 
-          title="Certificates" 
-          icon={Award}
-          content="Sertifikasi Google Cloud Professional, Meta Frontend Developer, dan DeepLearning.AI Specialization." 
-        />
-        <TimelineItem 
-          num="6" 
-          title="Contact" 
-          icon={Mail}
-          content="Terbuka untuk kolaborasi freelance atau full-time. Hubungi saya via email atau LinkedIn." 
-        />
-     </div>
-  </div>
-);
-
-const CarouselCard = ({ title, type, colorClass }) => (
-  <div className="bg-[#0f0f0f] rounded-[2rem] p-4 w-full md:w-1/3 flex-shrink-0 relative group cursor-pointer overflow-hidden h-64">
-    <div className={`absolute top-0 right-0 w-24 h-24 rounded-bl-[5rem] ${colorClass} opacity-80 transition group-hover:scale-150 duration-500`}></div>
-    
-    {/* Content Placeholder */}
-    <div className="h-full flex flex-col justify-end z-10 relative">
-      <div className="bg-white w-12 h-12 rounded-xl mb-4 flex items-center justify-center shadow-lg">
-         {type === 'web' && <LayoutTemplate size={24} className="text-black"/>}
-         {type === 'ai' && <Cpu size={24} className="text-black"/>}
-         {type === 'ui' && <Palette size={24} className="text-black"/>}
-      </div>
-      <h4 className="text-white font-bold text-xl">{title}</h4>
-      <div className="w-full h-1 bg-gray-800 mt-4 rounded-full overflow-hidden">
-        <div className={`h-full w-1/3 ${colorClass}`}></div>
-      </div>
-    </div>
-  </div>
-);
-
-const CarouselSection = () => (
-  <div className="flex items-center gap-4">
-    <button className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 flex-shrink-0">
-      <ChevronLeft size={24} />
-    </button>
-
-    <div className="flex gap-6 overflow-x-auto w-full pb-4 hide-scrollbar">
-      <CarouselCard title="Project Website" type="web" colorClass="bg-blue-500" />
-      <CarouselCard title="AI Automation" type="ai" colorClass="bg-purple-500" />
-      <CarouselCard title="UI/UX Illustration" type="ui" colorClass="bg-yellow-400" />
-    </div>
-
-    <button className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 flex-shrink-0">
-      <ChevronRight size={24} />
-    </button>
-  </div>
-);
-
-const Footer = () => (
-  <div className="bg-black text-white rounded-full px-8 py-4 mt-8 flex justify-between items-center shadow-2xl relative">
-    {/* Decorative Lines */}
-    <div className="absolute top-2 bottom-2 left-32 right-32 border-t border-b border-gray-800 hidden md:block"></div>
-
-    <span className="text-xs font-bold tracking-[0.2em] z-10">ABOUT ME</span>
-    
-    {/* Center Home Button Pop-out */}
-    <div className="bg-white w-16 h-16 -mt-8 rounded-full border-8 border-[#f0f0f0] flex items-center justify-center shadow-xl z-20 cursor-pointer transform hover:-translate-y-1 transition">
-      <Home className="text-black" size={24} />
-    </div>
-
-    <span className="text-xs font-bold tracking-[0.2em] z-10">CONTACT</span>
-  </div>
-);
-
-// --- MAIN APP ---
-
-function App() {
+/* --- Footer --- */
+const Footer = () => {
   return (
-    <div className="min-h-screen bg-[#f0f0f0] text-black font-sans p-4 md:p-8 max-w-[1440px] mx-auto space-y-8 selection:bg-black selection:text-white pb-12">
-      <Navbar />
-      <SearchSection />
-      <HeroSection />
-      <TimelineSection />
-      <CarouselSection />
-      <Footer />
+    <footer className="bg-white dark:bg-[#141414] rounded-full px-8 py-6 border border-gray-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors duration-300 shadow-md dark:shadow-none">
+       <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase">
+          <div className="w-6 h-6 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-black text-[10px]">AI</div>
+          <span>&copy; 2025 AI Engineer.</span>
+       </div>
+       <div className="flex gap-6 text-xs font-bold text-gray-500">
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">GitHub</a>
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
+       </div>
+    </footer>
+  );
+};
+
+/* ========================================================================
+   MAIN APP
+   ======================================================================== */
+const App = () => {
+  // Theme State Initialization
+  const [theme, setTheme] = useState(() => {
+    // Check localStorage or system preference
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'dark';
+    }
+    return 'dark';
+  });
+
+  // Apply Theme Effect
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // Toggle Handler
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-[#050505] text-gray-900 dark:text-white font-sans selection:bg-blue-500 selection:text-white pb-4 overflow-x-hidden transition-colors duration-300">
       
-      {/* Special styling for scrollbar hiding inside App scope */}
-      <style>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+      {/* Navbar with Theme Toggle */}
+      <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
+      
+      {/* Content */}
+      <main className="relative z-10 max-w-7xl mx-auto px-4 pt-28 space-y-6">
+         <Hero />
+         <About />
+         <Experience />
+         <Projects />
+         <Footer />
+      </main>
     </div>
   );
-}
+};
 
 export default App;
