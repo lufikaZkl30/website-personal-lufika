@@ -2,9 +2,170 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  margin: 0;
-  padding: 0;
-  @apply bg-soft-beige text-deep-black;
-  scroll-behavior: smooth;
+/* =========================================================
+   🌈 THEME VARIABLES
+   ========================================================= */
+:root {
+  --bg-main: #fafafa;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --border-main: #e5e7eb;
+  --accent: #3b82f6;
+}
+
+.dark {
+  --bg-main: #050505;
+  --bg-card: #0f0f0f;
+  --text-main: #f9fafb;
+  --border-main: #1f2937;
+  --accent: #60a5fa;
+}
+
+/* =========================================================
+   🎨 GLOBAL STYLE
+   ========================================================= */
+html,
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* =========================================================
+   🧻 CARTOON / COMIC BACKGROUND
+   ========================================================= */
+.bg-cartoon {
+  background-color: var(--bg-main);
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+}
+
+/* Dark mode grid */
+.dark .bg-cartoon {
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
+}
+
+/* =========================================================
+   📦 CARD STYLE (PUTIH KARTUN)
+   ========================================================= */
+.card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-main);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dark .card {
+  box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   🔘 BUTTON CARTOON
+   ========================================================= */
+.btn-cartoon {
+  background-color: var(--accent);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  border: 2px solid var(--border-main);
+  font-weight: 600;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-cartoon:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   🖱️ SELECTION
+   ========================================================= */
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+
+/* =========================
+   THEME VARIABLES
+========================= */
+:root {
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #000000;
+  --border-main: #000000;
+  --shadow-main: 6px 6px 0px #000000;
+}
+
+.dark {
+  --bg-main: #050505;
+  --bg-card: #0b0b0b;
+  --text-main: #ffffff;
+  --border-main: #2a2a2a;
+  --shadow-main: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* =========================
+   GLOBAL
+========================= */
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* =========================
+   CARTOON COMPONENT STYLE
+========================= */
+.cartoon-box {
+  background: var(--bg-card);
+  border: 3px solid var(--border-main);
+  border-radius: 24px;
+  box-shadow: var(--shadow-main);
+  transition: all 0.3s ease;
+}
+
+/* Navbar khusus */
+.cartoon-nav {
+  border: 3px solid var(--border-main);
+  border-radius: 999px;
+  box-shadow: var(--shadow-main);
+  background: var(--bg-card);
+}
+
+/* Button */
+.cartoon-btn {
+  border: 3px solid var(--border-main);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 700;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-main);
+  transition: all 0.2s ease;
+}
+
+.cartoon-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 var(--border-main);
 }
