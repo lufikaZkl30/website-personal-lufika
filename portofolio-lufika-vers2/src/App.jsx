@@ -446,9 +446,21 @@ const App = () => {
 
   return (
     // Background: Comic Pattern for Light, Dark Hex for Dark
-    <div className="min-h-screen bg-cartoon dark:bg-[#050505] text-black dark:text-white font-sans selection:bg-black selection:text-white dark:selection:bg-blue-500 pb-4 overflow-x-hidden transition-colors duration-300">
+   <div className="
+    min-h-screen
+    bg-[var(--bg-main)]
+    text-[var(--text-main)]
+    font-sans
+    selection:bg-black
+    selection:text-white
+    dark:selection:bg-blue-500
+    pb-4
+    overflow-x-hidden
+    transition-colors
+    duration-300
+    ">
       
-      <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
+    <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
       
       <main className="relative z-10 max-w-7xl mx-auto px-4 pt-28 space-y-6">
          <Hero />
