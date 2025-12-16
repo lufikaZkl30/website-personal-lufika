@@ -21,6 +21,12 @@ const Icons = {
   ),
   Brain: () => (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+  ),
+  Download: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+  ),
+  Message: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
   )
 };
 
@@ -86,7 +92,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
             aria-label="Toggle Theme"
             title={isDark ? "Switch to Comic Mode" : "Switch to Dark Mode"}
           >
-            {isDark ? "☀️" : "🌛"}
+            {isDark ? "☀️" : "🖊️"}
           </button>
           
           <button className="hidden md:block 
@@ -99,7 +105,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
           </button>
           
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-black dark:text-white p-2">
-            {isOpen ? <Icons.Close /> : <Icons.Menu />}
+            {isOpen ? <Icons.Menu /> : <Icons.Close />}
           </button>
         </div>
       </div>
@@ -353,7 +359,7 @@ const Projects = () => {
        <div className="flex justify-between items-end mb-8">
           <div>
              <span className="text-xs font-bold text-black dark:text-gray-500 uppercase tracking-widest">Selected Works</span>
-             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">AI Projects</h2>
+             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">Projects</h2>
           </div>
           <button className="hidden md:flex items-center gap-2 text-sm font-bold text-black dark:text-white hover:underline decoration-2">
              View GitHub <Icons.ArrowRight />
@@ -392,42 +398,34 @@ const Projects = () => {
   );
 };
 
-/* --- Contact Section --- */
+/* --- Contact --- */
 const Contact = () => {
   return (
     <section id="contact" className="
-      bg-white dark:bg-zinc-900 
+      bg-white dark:bg-[#141414] 
       rounded-[2.5rem] p-8 md:p-12 
       border-2 border-black dark:border-white/5 
       shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-none 
-      transition-colors duration-300">
-      <div className="text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold text-black dark:text-white mb-4">Let's Build Something Amazing</h2>
-        <p className="text-black dark:text-gray-400 text-sm leading-relaxed mb-8 font-medium">
-          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+      transition-colors duration-300 flex flex-col md:flex-row items-center justify-between gap-8">
+      
+      <div className="space-y-4">
+        <h2 className="text-3xl font-bold text-black dark:text-white">Let's Work Together</h2>
+        <p className="text-black dark:text-gray-400 text-sm max-w-md font-medium">
+          Interested in building something intelligent? I'm currently open for new opportunities and collaborations.
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <button className="
-            bg-black dark:bg-white 
-            text-white dark:text-black 
-            px-8 py-3 rounded-full text-sm font-bold 
-            border-2 border-black dark:border-transparent
-            hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] dark:hover:shadow-none dark:hover:opacity-80 
-            transition-all">
-            Send Email
-          </button>
-          <button className="
-            bg-white dark:bg-zinc-800 
-            text-black dark:text-white 
-            px-8 py-3 rounded-full text-sm font-bold 
-            border-2 border-black dark:border-white/10 
-            hover:bg-gray-100 dark:hover:bg-zinc-700 
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-none
-            active:shadow-none active:translate-y-[4px]
-            transition-all">
-            Download CV
-          </button>
-        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+        <button className="
+          flex items-center justify-center gap-2
+          bg-black dark:bg-white 
+          text-white dark:text-black 
+          px-8 py-4 rounded-xl text-sm font-bold 
+          border-2 border-black dark:border-transparent
+          hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] dark:hover:shadow-none dark:hover:opacity-80 
+          transition-all">
+          <Icons.Download /> Download CV
+        </button>
       </div>
     </section>
   );
@@ -468,7 +466,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    const root = document.documentElement;
+    const root = window.document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
@@ -478,7 +476,7 @@ const App = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   useEffect(() => {
@@ -486,16 +484,18 @@ const App = () => {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans pb-4 overflow-x-hidden transition-colors duration-300 bg-[var(--bg-main)] text-[var(--text-main)]">
-
+    // Background: Comic Pattern for Light, Dark Hex for Dark
+    <div className="min-h-screen bg-comic dark:bg-[#050505] text-black dark:text-white font-sans selection:bg-black selection:text-white dark:selection:bg-blue-500 pb-4 overflow-x-hidden transition-colors duration-300">
+      
       <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
-
+      
       <main className="relative z-10 max-w-7xl mx-auto px-4 pt-28 space-y-6">
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Footer />
+         <Hero />
+         <About />
+         <Experience />
+         <Projects />
+         <Contact />
+         <Footer />
       </main>
     </div>
   );
