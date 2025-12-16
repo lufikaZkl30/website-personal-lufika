@@ -86,7 +86,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
             aria-label="Toggle Theme"
             title={isDark ? "Switch to Comic Mode" : "Switch to Dark Mode"}
           >
-            {isDark ? "☀️" : "🖊️"}
+            {isDark ? "☀️" : "🌛"}
           </button>
           
           <button className="hidden md:block 
@@ -392,6 +392,47 @@ const Projects = () => {
   );
 };
 
+/* --- Contact Section --- */
+const Contact = () => {
+  return (
+    <section id="contact" className="
+      bg-white dark:bg-zinc-900 
+      rounded-[2.5rem] p-8 md:p-12 
+      border-2 border-black dark:border-white/5 
+      shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-none 
+      transition-colors duration-300">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold text-black dark:text-white mb-4">Let's Build Something Amazing</h2>
+        <p className="text-black dark:text-gray-400 text-sm leading-relaxed mb-8 font-medium">
+          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <button className="
+            bg-black dark:bg-white 
+            text-white dark:text-black 
+            px-8 py-3 rounded-full text-sm font-bold 
+            border-2 border-black dark:border-transparent
+            hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] dark:hover:shadow-none dark:hover:opacity-80 
+            transition-all">
+            Send Email
+          </button>
+          <button className="
+            bg-white dark:bg-zinc-800 
+            text-black dark:text-white 
+            px-8 py-3 rounded-full text-sm font-bold 
+            border-2 border-black dark:border-white/10 
+            hover:bg-gray-100 dark:hover:bg-zinc-700 
+            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-none
+            active:shadow-none active:translate-y-[4px]
+            transition-all">
+            Download CV
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 /* --- Footer --- */
 const Footer = () => {
   return (
@@ -427,7 +468,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
@@ -437,7 +478,7 @@ const App = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   useEffect(() => {
@@ -445,29 +486,16 @@ const App = () => {
   }, []);
 
   return (
-    // Background: Comic Pattern for Light, Dark Hex for Dark
-   <div className="
-    min-h-screen
-    bg-[var(--bg-main)]
-    text-[var(--text-main)]
-    font-sans
-    selection:bg-black
-    selection:text-white
-    dark:selection:bg-blue-500
-    pb-4
-    overflow-x-hidden
-    transition-colors
-    duration-300
-    ">
-      
-    <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
-      
+    <div className="min-h-screen font-sans pb-4 overflow-x-hidden transition-colors duration-300 bg-[var(--bg-main)] text-[var(--text-main)]">
+
+      <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} />
+
       <main className="relative z-10 max-w-7xl mx-auto px-4 pt-28 space-y-6">
-         <Hero />
-         <About />
-         <Experience />
-         <Projects />
-         <Footer />
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Footer />
       </main>
     </div>
   );

@@ -2,39 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base Transitions */
+/* ========================================================================
+   THEME VARIABLES (GLOBAL)
+   ======================================================================== */
+
+/* 🌞 LIGHT THEME (PUTIH KOMIK) */
+:root {
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --bg-soft: #f4f4f5;
+
+  --text-main: #000000;
+  --text-muted: #52525b;
+
+  --border-main: #000000;
+
+  --shadow-hard: 6px 6px 0px rgba(0, 0, 0, 1);
+}
+
+/* 🌚 DARK THEME */
+.dark {
+  --bg-main: #050505;
+  --bg-card: #0a0a0a;
+  --bg-soft: #111111;
+
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+
+  --border-main: rgba(255, 255, 255, 0.08);
+
+  --shadow-hard: none;
+}
+
+/* ========================================================================
+   BASE RESET
+   ======================================================================== */
+html,
 body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* --- COMIC MODE PATTERN (Light Mode Only) --- */
-/* Pola titik-titik halus untuk background putih */
-.bg-comic {
-  background-color: #ffffff;
-  background-image: radial-gradient(#000000 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Scrollbar styling agar sesuai tema */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.dark ::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 2px solid #fff;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: #333;
-  border: none;
-  border-radius: 5px;
 }
