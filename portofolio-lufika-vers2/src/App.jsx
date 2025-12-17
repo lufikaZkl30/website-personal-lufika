@@ -92,7 +92,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
             aria-label="Toggle Theme"
             title={isDark ? "Switch to Comic Mode" : "Switch to Dark Mode"}
           >
-            {isDark ? "☀️" : "🖊️"}
+            {isDark ? "☀️" : "🌙"}
           </button>
           
           <button className="hidden md:block 
@@ -175,11 +175,11 @@ const Hero = () => {
               bg-gray-100 dark:bg-white/5 
               border-2 border-black dark:border-white/10 
               w-max px-4 py-1.5 rounded-full transition-colors">
-              <span className="text-xs font-bold text-black dark:text-white">v2.0 AI Portfolio</span>
+              <span className="text-xs font-bold text-black dark:text-white">Student PORTFOLIO</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black text-black dark:text-white leading-[1.1] tracking-tight transition-colors">
-              AI ENGINEER <br />
+              Student AI & Web<br />
               <span className="text-black dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:to-white decoration-4 underline decoration-black dark:decoration-transparent underline-offset-4">
                 PORTFOLIO
               </span>
