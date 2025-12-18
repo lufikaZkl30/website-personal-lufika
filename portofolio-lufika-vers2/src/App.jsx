@@ -51,13 +51,13 @@ const Navbar = ({ toggleTheme, isDark }) => {
         rounded-full px-6 py-3 flex justify-between items-center 
         transition-all duration-300 backdrop-blur-xl">
         
-        {/* Brand */}
+        {/* Lgo */}
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black border-2 border-transparent dark:border-transparent transition-colors">
-            <span className="font-black text-lg">AI</span>
+            <span className="font-black text-lg">LA</span>
           </div>
           <span className="text-lg font-bold tracking-tighter text-black dark:text-white transition-colors">
-            Engineer<span className="text-gray-500">.dev</span>
+            LuviAsakura<span className="text-gray-500">.dev</span>
           </span>
         </div>
 
@@ -186,7 +186,9 @@ const Hero = () => {
             </h1>
 
             <p className="text-black dark:text-gray-400 text-lg max-w-md transition-colors font-medium">
-              Building intelligent systems with data, code, and design. Specialized in NLP, Computer Vision, and Predictive Analytics.
+              Building intelligent systems with data, code, and design.
+              Currently learning AI fundamentals including NLP, Computer Vision,
+              and Predictive Analytics through projects and experimentation.
             </p>
 
             <div className="flex gap-4 pt-4">
@@ -215,28 +217,67 @@ const Hero = () => {
 
           {/* Code Visual */}
           <div className="flex flex-col justify-center">
-             <div className="
-               bg-white dark:bg-[#1a1a1a] 
-               rounded-2xl border-2 border-black dark:border-white/10 
-               p-6 font-mono text-sm 
-               shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-2xl 
-               transition-colors">
-                <div className="flex gap-2 mb-4 border-b-2 border-black dark:border-transparent pb-4">
-                   <div className="w-3 h-3 rounded-full bg-black dark:bg-red-500 border border-black dark:border-transparent"></div>
-                   <div className="w-3 h-3 rounded-full bg-white dark:bg-yellow-500 border border-black dark:border-transparent"></div>
-                   <div className="w-3 h-3 rounded-full bg-gray-300 dark:bg-green-500 border border-black dark:border-transparent"></div>
-                </div>
-                <div className="space-y-2 text-black dark:text-gray-400 font-bold dark:font-normal">
-                   <p><span className="text-blue-600 dark:text-blue-400">import</span> torch</p>
-                   <p><span className="text-blue-600 dark:text-blue-400">import</span> tensorflow <span className="text-blue-600 dark:text-blue-400">as</span> tf</p>
-                   <p className="text-gray-500 italic"># Initializing Neural Network</p>
-                   <p><span className="text-purple-600 dark:text-purple-400">class</span> <span className="text-yellow-600 dark:text-yellow-400">AI_Model</span>(nn.Module):</p>
-                   <p className="pl-4">def __init__(self):</p>
-                   <p className="pl-8">super(AI_Model, self).__init__()</p>
-                   <p className="pl-8 text-green-600 dark:text-green-400">self.status = "Ready to Deploy"</p>
-                </div>
-             </div>
+            <div
+              className="
+                bg-white dark:bg-[#1a1a1a] 
+                rounded-2xl border-2 border-black dark:border-white/10 
+                p-6 font-mono text-sm 
+                shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-2xl 
+                transition-colors
+              "
+            >
+              {/* Window Controls */}
+              <div className="flex gap-2 mb-4 border-b-2 border-black dark:border-transparent pb-4">
+                <div className="w-3 h-3 rounded-full bg-black dark:bg-red-500 border border-black dark:border-transparent"></div>
+                <div className="w-3 h-3 rounded-full bg-white dark:bg-yellow-500 border border-black dark:border-transparent"></div>
+                <div className="w-3 h-3 rounded-full bg-gray-300 dark:bg-green-500 border border-black dark:border-transparent"></div>
+              </div>
+
+              {/* Code Content */}
+              <div className="space-y-2 text-black dark:text-gray-400 font-bold dark:font-normal">
+                <p>
+                  <span className="text-blue-600 dark:text-blue-400">const</span> profile = {"{"}
+                </p>
+
+                <p className="pl-4">
+                  name: <span className="text-green-600 dark:text-green-400">"Luvi Asakura"</span>,
+                </p>
+
+                <p className="pl-4">
+                  role: <span className="text-green-600 dark:text-green-400">"Student AI & Web Developer"</span>,
+                </p>
+
+                <p className="pl-4">
+                  focus: [
+                  <span className="text-green-600 dark:text-green-400">"AI Fundamentals"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"Web Development"</span>
+                  ],
+                </p>
+
+                <p className="pl-4">
+                  tools: [
+                  <span className="text-green-600 dark:text-green-400">"HTML"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"CSS"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"JavaScript"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"React"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"Node.js"</span>
+                  ],
+                </p>
+
+                <p className="pl-4">
+                  status: <span className="text-green-600 dark:text-green-400">"Learning & Building Projects"</span>
+                </p>
+
+                <p>{"};"}</p>
+
+                <p>
+                  <span className="text-blue-600 dark:text-blue-400">export default</span> profile;
+                </p>
+              </div>
+            </div>
           </div>
+
+          
         </div>
       </div>
     </section>
@@ -256,11 +297,11 @@ const About = () => {
         <div>
           <h2 className="text-3xl font-bold text-black dark:text-white mb-6">About My Tech Stack</h2>
           <p className="text-black dark:text-gray-400 text-sm leading-relaxed mb-6 font-medium">
-             I am an engineer focused on the intersection of Software Engineering and Artificial Intelligence. 
-             My goal is to create scalable AI solutions that solve real-world problems using state-of-the-art algorithms.
+             A computer science student learning AI and web development
+            through hands-on projects and continuous experimentation.
           </p>
           <div className="grid grid-cols-2 gap-4">
-             {['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'SQL', 'FastAPI'].map((tech) => (
+             {['Python', 'JavaScript', 'Tailwindcss (Fundamentals)', 'Git & GitHub  ', 'Node.js (basic)', 'React (Fundamentals)'].map((tech) => (
                 <div key={tech} className="flex items-center gap-2 text-black dark:text-gray-300 text-sm font-bold">
                    <div className="w-2 h-2 rounded-full bg-black dark:bg-blue-500"></div> {tech}
                 </div>
@@ -270,10 +311,10 @@ const About = () => {
         
         <div className="grid grid-cols-2 gap-4">
            {[
-             { title: "Machine Learning", desc: "Supervised & Unsupervised" },
-             { title: "Deep Learning", desc: "CNNs, RNNs, Transformers" },
-             { title: "Data Engineering", desc: "ETL Pipelines & Big Data" },
-             { title: "Model Deployment", desc: "Docker, Kubernetes, AWS" }
+             { title: "Basic Concepts & Practice", desc: "Core ideas & hands-on practice" },
+             { title: "Introduction & Experiments", desc: "Exploration and experimentation" },
+             { title: "Data Cleaning & Processing", desc: "Preparing and organizing data" },
+             { title: "Basic API & AI Integration", desc: "Simple backend and frontend flow" }
            ].map((item, idx) => (
               <div key={idx} className="
                 bg-white dark:bg-[#0a0a0a] 
@@ -295,10 +336,10 @@ const About = () => {
 /* --- Experience --- */
 const Experience = () => {
   const steps = [
-    { title: "Foundations", subtitle: "Math & Stats", desc: "Mastering Linear Algebra, Calculus, and Probability." },
-    { title: "Data Analysis", subtitle: "Python & Pandas", desc: "Exploratory Data Analysis and visualization techniques." },
-    { title: "Machine Learning", subtitle: "Algorithms", desc: "Implementing regression, classification, and clustering." },
-    { title: "Deep Learning", subtitle: "Neural Networks", desc: "Building complex models for Vision and NLP tasks." }
+    { title: "Foundations", subtitle: "Basic Programming & Logic", desc: "Learning programming fundamentals, problem-solving, and basic algorithms using Python and JavaScript." },
+    { title: "Data Analysis", subtitle: "Python & Data Handling", desc: "Exploring data using Python, basic data processing, and simple visualizations to understand patterns and insights." },
+    { title: "Machine Learning", subtitle: "Supervised Learning Basics", desc: "Learning fundamental machine learning concepts such as regression and classification using simple datasets." },
+    { title: "Deep Learning", subtitle: "Neural Network Introduction", desc: "Understanding the basics of neural networks and experimenting with simple deep learning models." }
   ];
 
   return (
