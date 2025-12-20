@@ -382,59 +382,116 @@ const Experience = () => {
   );
 };
 
-/* --- Projects --- */
+/* --- Projects Section --- */
 const Projects = () => {
   const projects = [
-    { title: "Predictive Analytics", tech: "Python, Scikit-learn", desc: "Forecasting market trends using historical data." },
-    { title: "Computer Vision", tech: "OpenCV, PyTorch", desc: "Real-time object detection system for security feeds." },
-    { title: "NLP Chatbot", tech: "LLM, Transformers", desc: "Context-aware customer support bot using RAG." }
+    {
+      title: "AksaBuku Bookstore",
+      tech: "Node.js, EJS, MongoDB, JavaScript, CSS",
+      desc: "A library and bookstore web app built to practice full-stack development with book browsing, search, and user management.",
+      link: "https://github.com/lufikaZkl30/AksaBuku-Library-Management-BookStore",
+
+    },
+    {
+      title: "TMII Front-End Recreate",
+      tech: "HTML, CSS, JavaScript",
+      desc: "A front-end recreation project to practice layouting, styling, and basic interactivity by redesigning the TMII website interface.",
+      link: "https://github.com/lufikaZkl30/TMII-Front-End-Recreate",
+    },
+    {
+      title: "MindEase NLP Chatbot",
+      tech: "Python, NLP, Transformers",
+      desc: "A simple NLP-based chatbot project created to learn how language models process user input and generate responses.",
+      link: "https://github.com/lufikaZkl30/MindEase-ChatBot-Real",
+    },
   ];
 
   return (
-    <section id="projects" className="
-      bg-white dark:bg-[#141414] 
-      rounded-[2.5rem] p-8 md:p-12 
-      border-2 border-black dark:border-white/5 
-      shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-none 
-      transition-colors duration-300">
-       <div className="flex justify-between items-end mb-8">
-          <div>
-             <span className="text-xs font-bold text-black dark:text-gray-500 uppercase tracking-widest">Selected Works</span>
-             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">Projects</h2>
-          </div>
-          <button className="hidden md:flex items-center gap-2 text-sm font-bold text-black dark:text-white hover:underline decoration-2">
-             View GitHub <Icons.ArrowRight />
-          </button>
-       </div>
+    <section
+      id="projects"
+      className="
+        bg-white dark:bg-[#141414]
+        rounded-[2.5rem]
+        p-8 md:p-12
+        border-2 border-black dark:border-white/5
+        shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-none
+        transition-colors duration-300
+      "
+    >
+      {/* Header */}
+      <div className="flex justify-between items-end mb-8">
+        <div>
+          <span className="text-xs font-bold text-black dark:text-gray-500 uppercase tracking-widest">
+            Selected Works
+          </span>
+          <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
+            Projects
+          </h2>
+        </div>
 
-       <div className="grid md:grid-cols-3 gap-6">
-          {projects.map((proj, idx) => (
-             <div key={idx} className="group 
-               bg-white dark:bg-[#0a0a0a] 
-               rounded-[2rem] 
-               border-2 border-black dark:border-white/5 
-               shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-none 
-               p-1 relative overflow-hidden 
-               hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:border-white/20 dark:hover:shadow-none
-               transition-all">
-                <div className="bg-white dark:bg-[#111] rounded-[1.8rem] p-6 h-full flex flex-col justify-between transition-colors">
-                   <div className="mb-8">
-                      <div className="w-10 h-10 bg-gray-100 dark:bg-[#222] rounded-full flex items-center justify-center mb-4 text-black dark:text-white border border-black dark:border-transparent transition-colors">
-                         <Icons.Code />
-                      </div>
-                      <h3 className="text-xl font-bold text-black dark:text-white mb-2">{proj.title}</h3>
-                      <p className="text-black dark:text-gray-400 text-sm leading-relaxed font-medium">{proj.desc}</p>
-                   </div>
-                   <div className="pt-4 border-t-2 border-black dark:border-white/5 flex justify-between items-center">
-                      <span className="text-xs font-mono text-gray-600 dark:text-gray-500 font-bold">{proj.tech}</span>
-                      <div className="w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                         <Icons.ArrowRight />
-                      </div>
-                   </div>
+        <a
+          href="https://github.com/lufikaZkl30"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:flex items-center gap-2 text-sm font-bold text-black dark:text-white hover:underline decoration-2"
+        >
+          View GitHub <Icons.ArrowRight size={16} />
+        </a>
+      </div>
+
+      {/* Project Cards */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {projects.map((proj, idx) => (
+          <a
+            key={idx}
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block"
+          >
+            <div
+              className="
+                bg-white dark:bg-[#0a0a0a]
+                rounded-[2rem]
+                border-2 border-black dark:border-white/5
+                shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-none
+                p-1
+                hover:translate-x-1 hover:translate-y-1 hover:shadow-none
+                dark:hover:border-white/20
+                transition-all
+              "
+            >
+              <div className="bg-white dark:bg-[#111] rounded-[1.8rem] p-6 h-full flex flex-col justify-between">
+                {/* Content */}
+                <div className="mb-8">
+                  <div className="w-10 h-10 bg-gray-100 dark:bg-[#222] rounded-full flex items-center justify-center mb-4 text-black dark:text-white border border-black dark:border-transparent">
+                    <Icons.Code size={18} />
+                  </div>
+
+                  <h3 className="text-xl font-bold text-black dark:text-white mb-2">
+                    {proj.title}
+                  </h3>
+
+                  <p className="text-black dark:text-gray-400 text-sm leading-relaxed font-medium">
+                    {proj.desc}
+                  </p>
                 </div>
-             </div>
-          ))}
-       </div>
+
+                {/* Footer */}
+                <div className="pt-4 border-t-2 border-black dark:border-white/5 flex justify-between items-center">
+                  <span className="text-xs font-mono text-gray-600 dark:text-gray-500 font-bold">
+                    {proj.tech}
+                  </span>
+
+                  <div className="w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Icons.ArrowRight size={16} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
     </section>
   );
 };
@@ -483,8 +540,8 @@ const Footer = () => {
       flex flex-col md:flex-row items-center justify-between gap-4 
       transition-colors duration-300">
        <div className="flex items-center gap-2 text-xs font-bold text-black dark:text-gray-500 uppercase">
-          <div className="w-6 h-6 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-black text-[10px]">AI</div>
-          <span>&copy; 2025 AI Engineer.</span>
+          <div className="w-6 h-6 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-black text-[10px]">LA</div>
+          <span>&copy; 2025 Personal PORTFOLIO.</span>
        </div>
        <div className="flex gap-6 text-xs font-bold text-black dark:text-gray-500">
           <a href="#" className="hover:underline decoration-2">GitHub</a>
