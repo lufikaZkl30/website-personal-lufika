@@ -92,7 +92,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
             aria-label="Toggle Theme"
             title={isDark ? "Switch to Comic Mode" : "Switch to Dark Mode"}
           >
-            {isDark ? "☀️" : "🌙"}
+            {isDark ? "𖤓" : "☾"}
           </button>
           
           <button className="hidden md:block 
@@ -240,17 +240,17 @@ const Hero = () => {
                 </p>
 
                 <p className="pl-4">
-                  name: <span className="text-green-600 dark:text-green-400">"Luvi Asakura"</span>,
+                  name: <span className="text-green-600 dark:text-green-400">"Lufika Ayu Fatimah"</span>,
                 </p>
 
                 <p className="pl-4">
-                  role: <span className="text-green-600 dark:text-green-400">"Student AI & Web Developer"</span>,
+                  role: <span className="text-green-600 dark:text-green-400">"Student AI & Web Design"</span>,
                 </p>
 
                 <p className="pl-4">
                   focus: [
-                  <span className="text-green-600 dark:text-green-400">"AI Fundamentals"</span>,{" "}
-                  <span className="text-green-600 dark:text-green-400">"Web Development"</span>
+                  <span className="text-green-600 dark:text-green-400">"AI Engineering"</span>,{" "}
+                  <span className="text-green-600 dark:text-green-400">"Web Design"</span>
                   ],
                 </p>
 
@@ -514,17 +514,25 @@ const Contact = () => {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-        <button className="
-          flex items-center justify-center gap-2
-          bg-black dark:bg-white 
-          text-white dark:text-black 
-          px-8 py-4 rounded-xl text-sm font-bold 
-          border-2 border-black dark:border-transparent
-          hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] dark:hover:shadow-none dark:hover:opacity-80 
-          transition-all">
+        <a
+          href="./public/CV_Luvika Ayu Fatimah.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            flex items-center justify-center gap-2
+            bg-black dark:bg-white 
+            text-white dark:text-black 
+            px-8 py-4 rounded-xl text-sm font-bold 
+            border-2 border-black dark:border-transparent
+            hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] 
+            dark:hover:shadow-none dark:hover:opacity-80 
+            transition-all
+          "
+        >
           <Icons.Download /> Download CV
-        </button>
+        </a>
       </div>
+
     </section>
   );
 };
@@ -541,13 +549,36 @@ const Footer = () => {
       transition-colors duration-300">
        <div className="flex items-center gap-2 text-xs font-bold text-black dark:text-gray-500 uppercase">
           <div className="w-6 h-6 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-black text-[10px]">LA</div>
-          <span>&copy; 2025 Personal PORTFOLIO.</span>
+          <span>&copy; 2026 Personal PORTFOLIO.</span>
        </div>
+
        <div className="flex gap-6 text-xs font-bold text-black dark:text-gray-500">
-          <a href="#" className="hover:underline decoration-2">GitHub</a>
-          <a href="#" className="hover:underline decoration-2">LinkedIn</a>
-          <a href="#" className="hover:underline decoration-2">Email</a>
-       </div>
+        <a 
+          href="https://github.com/lufikaZkl30"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline decoration-2"
+        >
+          GitHub
+        </a>
+
+        <a 
+          href="www.linkedin.com/in/lufikaayu"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline decoration-2"
+        >
+          LinkedIn
+        </a>
+
+        <a 
+          href="lufikabgy337@gmail.com"
+          className="hover:underline decoration-2"
+        >
+          Email
+        </a>
+      </div>
+
     </footer>
   );
 };
