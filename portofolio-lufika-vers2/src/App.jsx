@@ -563,7 +563,7 @@ const Footer = () => {
         </a>
 
         <a 
-          href="www.linkedin.com/in/lufikaayu"
+          href="https://www.linkedin.com/in/lufikaayu"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline decoration-2"
